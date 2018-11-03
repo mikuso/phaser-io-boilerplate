@@ -12,7 +12,9 @@ class BootstrapScene extends Phaser.Scene {
         // this.load.spritesheet("throbber", "images/misc/throbber.png", {frameWidth: 44, frameHeight: 44});
         // console.log(this.net);
 
-        net.auth('abc');
+        net.auth({username: 'abc', password: 'test'});
+        // let b = new ArrayBuffer(10);
+        // net.auth(b);
         this.add.text(50,50,'BOOTING')
     }
 
@@ -21,13 +23,17 @@ class BootstrapScene extends Phaser.Scene {
         // console.log('scene udpate');
     }
 
-    [net.auth_granted](...args) {
-        console.log(...args);
+    [net.auth_granted]({token}) {
+        console.log('auth granted!', token);
     }
 
-    [net.auth_denied](...args) {
-        this.scene.start('LoadingScene');
+    [net.auth_denied]({reason}) {
+        this.scene.start('LoadingScene', {reason});
         // this.scene.start('DisconnectedScene', {reason: "Authentication Failed"});
+    }
+
+    [net.onDisconnect]() {
+        console.log('disconnected');
     }
 }
 

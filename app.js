@@ -18,8 +18,7 @@ function getClientBundle({debug = false} = {}) {
 	let bundler = browserify({
 		debug,
         noParse: [
-            path.resolve(__dirname, './node_modules/phaser/dist/phaser.min.js'),
-            path.resolve(__dirname, './node_modules/socket.io-client/dist/socket.io.js')
+            path.resolve(__dirname, './node_modules/phaser/dist/phaser.min.js')
         ],
         entries: [
             path.resolve(__dirname, './client/index.js')
