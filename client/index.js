@@ -7,8 +7,7 @@ const game = new Phaser.Game({
     pixelArt: true,
     roundPixels: true,
     banner: false,
-    disableContextMenu: true,
-    callbacks: {postBoot}
+    disableContextMenu: true
 });
 
 game.scene.add('BootstrapScene', require('./scenes/bootstrap'));
