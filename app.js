@@ -47,6 +47,7 @@ async function runBuild() {
     });
 
     console.log(chalk.green.bold('[√]'), `Compile time: ${(Date.now() - start).toLocaleString()} ms`);
+    return bundle;
 }
 
 let server = new WebServer();
@@ -58,7 +59,7 @@ let game = new GameServer({
 async function setupRoutes() {
     if (process.env.NODE_ENV === 'production') {
         // production env
-        await runBuild();
+        const bundle = await runBuild();
 
         server.app.get('/main.js', (req, res) => {
             res.type('text/javascript').send(bundle);
