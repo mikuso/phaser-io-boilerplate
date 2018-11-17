@@ -122,7 +122,7 @@ async function main() {
             await setupRoutes();
             // start webserver
             await server.startup({
-                listenPort: process.env.LISTEN_PORT || 3064
+                listenPort: process.env.PORT || 3064
             });
             // start gameserver
             await game.startup();
