@@ -3,7 +3,18 @@
 
 class BootstrapScene extends Phaser.Scene {
     create() {
-        this.add.text(50,50,'BOOTING');
+        this.load.spritesheet({
+            key: 'crystalball',
+            url: 'assets/spritesheets/crystalball.png',
+            frameConfig: {frameWidth: 36, frameHeight: 36}
+        });
+
+        this.load.on('complete', () => {
+            this.scene.stop();
+            this.scene.start('LoadingScene');
+        });
+
+        this.load.start();
     }
 }
 
