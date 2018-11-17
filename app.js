@@ -51,10 +51,7 @@ async function runBuild() {
 }
 
 let server = new WebServer();
-let game = new GameServer({
-    webserver: server,
-    netMessages: require('./shared/net-messages')
-});
+let game = new GameServer({webserver: server});
 
 async function setupRoutes() {
     if (process.env.NODE_ENV === 'production') {
