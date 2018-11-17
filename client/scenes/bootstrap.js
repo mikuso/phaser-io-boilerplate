@@ -10,6 +10,13 @@ class BootstrapScene extends Phaser.Scene {
         });
 
         this.load.on('complete', () => {
+            this.anims.create({
+                key: 'crystalballAnim',
+                frames: this.anims.generateFrameNumbers('crystalball', { start: 0, end: 15 }),
+                frameRate: 16,
+                repeat: -1
+            });
+
             this.scene.stop();
             this.scene.start('LoadingScene');
         });
