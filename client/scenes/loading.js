@@ -1,3 +1,4 @@
+// The bulk of the asset loading should be performed here.
 
 class LoadingScene extends Phaser.Scene {
     create() {

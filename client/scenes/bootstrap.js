@@ -3,7 +3,7 @@
 
 class BootstrapScene extends Phaser.Scene {
     create() {
-        this.add.text(50,50,'BOOTING')
+        this.add.text(50,50,'BOOTING');
     }
 }
 
