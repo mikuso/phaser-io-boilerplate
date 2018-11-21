@@ -36,3 +36,16 @@ The `startup()` method in `/lib/gameserver.js` is a good starting point to build
 The **GameServer** emits a `player.connected` event when a **Player** connects, and gives you the **Player** instance.
 
 **Player**s emit events as defined in the `/shared/net-messages.js` file.
+
+## Missing features
+
+* Network & CPU scaling/load balancing.  
+  Ideally you'd want to split your game into "room"-like smaller instances and balance the load across multiple processes or servers.
+* A shared game loop.  
+  A fixed timestep game loop would make physics more predictable and easier to synchronise between clients and server, if that's your kind of thing.
+* A lobby system.  
+  Most multiplayer games need some kind of lobby system, don't they?
+* GUI boilerplate.  
+  User interfaces can be tricky in Phaser, and many standard features are missing (text inputs, drop-downs, scroll bars, etc...).
+* (visual) scaling/fullscreen support.  
+  Waiting to see where Phaser goes on this one. Let's hope for a ScaleManager update in 3.16.0
