@@ -7,7 +7,7 @@ const expressLess = require('express-less');
 const concatStream = require('concat-stream');
 const commander = require('commander');
 const WebServer = require('./lib/webserver');
-const GameServer = require('./lib/gameserver');
+const GameCore = require('./game/core');
 
 
 function getClientBundle({debug = false} = {}) {
@@ -50,20 +50,20 @@ async function runBuild() {
     return bundle;
 }
 
-let server = new WebServer();
-let game = new GameServer({webserver: server});
+const webserver = new WebServer();
+const gameserver = new GameCore({webserver});
 
 async function setupRoutes() {
     if (process.env.NODE_ENV === 'production') {
         // production env
         const bundle = await runBuild();
 
-        server.app.get('/main.js', (req, res) => {
+        webserver.app.get('/main.js', (req, res) => {
             res.type('text/javascript').send(bundle);
         });
 
         console.log(chalk.green.bold('[√]'), `Caching and minifying LESS -> CSS`);
-        server.app.use('/css', expressLess(path.resolve(__dirname, './public/less'), {
+        webserver.app.use('/css', expressLess(path.resolve(__dirname, './public/less'), {
             compress: true,
             cache: true
         }));
@@ -71,7 +71,7 @@ async function setupRoutes() {
     } else {
         // development env
         console.log(chalk.green.bold('[√]'), `Live bundling client scripts`);
-        server.app.get('/main.js', (req, res) => {
+        webserver.app.get('/main.js', (req, res) => {
             res.type('text/javascript');
             let stream = getClientBundle({debug: true});
             stream.on('error', err => {
@@ -82,13 +82,13 @@ async function setupRoutes() {
         });
 
         console.log(chalk.green.bold('[√]'), `Live compiling LESS -> CSS`);
-        server.app.use('/css', expressLess(path.resolve(__dirname, './public/less'), {
+        webserver.app.use('/css', expressLess(path.resolve(__dirname, './public/less'), {
             debug: true
         }));
     }
 
     // serve assets
-    server.app.use(require('express').static(path.resolve(__dirname, './public')));
+    webserver.app.use(require('express').static(path.resolve(__dirname, './public')));
 }
 
 // interrupt handler
@@ -97,8 +97,8 @@ process.on('SIGINT', function onInterrupt() {
     onInterrupt.interrupted = true;
     console.log(chalk.red.bold('[!]'),`Shutting down gracefully. Press Ctrl+Break to force close.`);
     Promise.all([
-        game.shutdown(),
-        server.shutdown()
+        gameserver.shutdown(),
+        webserver.shutdown()
     ]).catch(err => {
         console.error(`Error during shutdown:`, err);
         process.exit(1);
@@ -121,11 +121,11 @@ async function main() {
             // run game
             await setupRoutes();
             // start webserver
-            await server.startup({
+            await webserver.startup({
                 listenPort: process.env.PORT || 3064
             });
             // start gameserver
-            await game.startup();
+            await gameserver.startup();
         }
 
     } catch (err) {
