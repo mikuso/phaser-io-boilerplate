@@ -41,8 +41,6 @@ The **GameServer** emits a `player.connected` event when a **Player** connects, 
 
 * Network & CPU scaling/load balancing.  
   Ideally you'd want to split your game into "room"-like smaller instances and balance the load across multiple processes or servers.
-* A shared game loop.  
-  A fixed timestep game loop would make physics more predictable and easier to synchronise between clients and server, if that's your kind of thing.
 * A lobby system.  
   Most multiplayer games need some kind of lobby system, don't they?
 * GUI boilerplate.  
