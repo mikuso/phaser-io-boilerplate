@@ -96,10 +96,7 @@ process.on('SIGINT', function onInterrupt() {
     if (onInterrupt.interrupted) return;
     onInterrupt.interrupted = true;
     console.log(chalk.red.bold('[!]'),`Shutting down gracefully. Press Ctrl+Break to force close.`);
-    Promise.all([
-        gameserver.shutdown(),
-        webserver.shutdown()
-    ]).catch(err => {
+    gameserver.shutdown().catch(err => {
         console.error(`Error during shutdown:`, err);
         process.exit(1);
     });
@@ -111,23 +108,16 @@ async function main() {
         .parse(process.argv);
 
     try {
-
         if (commander.build) {
             // run build process
             await runBuild();
 
         } else {
-
             // run game
             await setupRoutes();
-            // start webserver
-            await webserver.startup({
-                listenPort: process.env.PORT || 3064
-            });
             // start gameserver
             await gameserver.startup();
         }
-
     } catch (err) {
         console.error(`Error on startup:`, err);
         process.exit(1);

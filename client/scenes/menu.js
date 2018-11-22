@@ -7,10 +7,12 @@ class MenuScene extends Phaser.Scene {
 
     create() {
         this.add.image(0, 0, 'bg').setOrigin(0,0);
+
+        net.auth({username: "guest", password: "guest"})
     }
 
     [net.auth_granted]({token}) {
-        console.log('received token', token);
+        console.log('received token:', token);
     }
 }
 

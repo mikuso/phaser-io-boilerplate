@@ -1,10 +1,5 @@
 const sp = require('schemapack');
 
-const payloadSchema = sp.build({
-    id: "varuint",
-    data: "buffer"
-});
-
 const messages = {
 
     client: [
@@ -35,9 +30,16 @@ const messages = {
 
 };
 
+
+const payloadSchema = sp.build({
+    id: "varuint",
+    data: "buffer"
+});
+
 messages.encode = ({id, data}) => {
     return payloadSchema.encode({id, data});
 };
+
 messages.decode = (buffer) => {
     return payloadSchema.decode(buffer);
 };

@@ -10,21 +10,25 @@ class OverworldLoop extends GameLoop {
         // * inputs
         // * world simulation
         // * outputs
-        console.log('timestep', this.getTime());
+        console.log('Time @', this.getTime(), 'in', this.constructor.name);
     }
 
     startup() {
         super.startup()
-        console.log('overworld loop started');
-        
-        this.delay(1000, () => console.log("After 1 second"));
-        this.delay(2000, () => this.shutdown());
-        this.delay(3000, () => console.log("After 3 seconds (won't trigger)"));
+        console.log('Loop started @', this.constructor.name);
+
+        this.delay(2000, () => console.log("Timer triggered after 2 seconds (a)"));
+        this.delay(2000, () => console.log("Timer triggered after 2 seconds (b)"));
+        this.delay(2000, () => console.log("Timer triggered after 2 seconds (c)"));
+        this.delay(1000, () => console.log("Timer triggered after 1 second"));
+        this.delay(3000, () => console.log("Timer triggered after 3 seconds"));
+        this.delay(3000, () => this.shutdown());
+        this.delay(3000, () => console.log("Timer won't trigger because loop shut down"));
     }
 
     shutdown() {
         super.shutdown()
-        console.log('overworld loop stopped');
+        console.log('Loop stopped @', this.constructor.name);
     }
 }
 
